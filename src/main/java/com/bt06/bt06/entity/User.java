@@ -22,6 +22,4 @@ public class User {
     private String password;
     @Column(name="email", length = 100)
     private String email;
-    @OneToMany(mappedBy = "user")
-    private List<Category> categories;
 }

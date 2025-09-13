@@ -19,7 +19,4 @@ public class Category {
     private String cateName;
     @Column(name="cateIcon", columnDefinition = "VARCHAR(255)")
     private String cateIcon;
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 }
