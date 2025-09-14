@@ -1,0 +1,84 @@
+<!-- /templates/admin/category/index.html -->
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Danh mục</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .thumb { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; border:1px solid #eee; }
+        .table thead th { white-space: nowrap; }
+        .modal .form-text { font-size: .85rem; }
+    </style>
+</head>
+<body class="bg-light">
+
+<!-- Nếu bạn có layout sẵn thì thay bằng:
+<header th:replace="client/layout/header :: header"></header>
+-->
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="h4 mb-0">Danh mục sản phẩm</h1>
+        <a class="btn btn-primary" th:href="@{/admin/categories/add}">
+            + Thêm danh mục
+        </a>
+    </div>
+
+    <!-- Thanh tìm kiếm (optional) -->
+    <form class="row g-2 mb-3" th:action="@{/admin/categories}" method="get">
+        <div class="col-sm-8 col-md-6">
+            <input class="form-control" name="q" placeholder="Tìm theo tên danh mục...">
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-outline-secondary">Tìm</button>
+            <a class="btn btn-outline-dark" th:href="@{/admin/categories}">Làm mới</a>
+        </div>
+    </form>
+
+    <!-- Bảng danh sách -->
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                <tr>
+                    <th style="width: 80px;">ID</th>
+                    <th>Tên danh mục</th>
+                    <th style="width: 110px;">Ảnh</th>
+                    <th style="width: 180px;" class="text-end">Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Giả sử model attribute: categories = List<Category> -->
+                <tr th:each="c : ${categories}">
+                    <td th:text="${c.id}">1</td>
+                    <td th:text="${c.cateName}">Nhẫn</td>
+                    <td>
+                        <img class="thumb"
+                             th:src="${#strings.isEmpty(c.cateIcon) ? '/images/no-image.png' : '/images/category/' + c.cateIcon}"
+                             alt="Ảnh"/>
+                    </td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-primary"
+                                th:href="@{/admin/categories/edit/{id}(id=${c.id})}">
+                            Sửa
+                        </a>
+                        <a class="btn btn-sm btn-outline-danger"
+                                th:href="@{/admin/categories/delete/{id}(id=${c.id})}"
+                           onclick="return confirm('Bạn có chắc muốn xóa danh mục này không?');">
+                            Xóa
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(categories)}">
+                    <td colspan="4" class="text-center text-muted py-4">Chưa có danh mục nào.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
